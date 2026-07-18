@@ -1,36 +1,381 @@
 ---
 const links = ["About", "Skills", "Projects", "Experience", "Contact"];
 ---
-<nav style="position:fixed; top:0; width:100%; backdrop-filter:blur(10px); z-index:50; border-bottom:1px solid var(--border); background:color-mix(in srgb, var(--bg) 85%, transparent);">
-  <div class="section" style="display:flex; justify-content:space-between; align-items:center; padding:1rem 1.5rem;">
-    <span style="font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.25rem;">Your Name</span>
-    <ul style="display:flex; gap:1.5rem; list-style:none; margin:0; padding:0; font-size:0.9rem; font-weight:500;">
+<div id="scroll-progress-container">
+  <div id="scroll-progress"></div>
+</div>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo mono">
+      My<span class="logo-dot">.</span>Portfolio
+    </a>
+
+    <ul class="nav-links">
       {links.map(link => (
-        <li><a href={`#${link.toLowerCase()}`}>{link}</a></li>
+        <li>
+          <a href={`#${link.toLowerCase()}`} data-nav-link>
+            <span class="link-text">{link}</span>
+          </a>
+        </li>
       ))}
     </ul>
-    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-      <span id="icon-sun">☀️</span>
-      <span id="icon-moon" style="display:none;">🌙</span>
-    </button>
+
+    <div class="nav-actions">
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+        <svg id="icon-sun" class="theme-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        <svg id="icon-moon" class="theme-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+      
+      <button id="menu-toggle" class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
+
+  <ul id="mobile-menu" class="mobile-menu">
+    {links.map(link => (
+      <li><a href={`#${link.toLowerCase()}`} data-nav-link>{link}</a></li>
+    ))}
+  </ul>
 </nav>
 
-<script is:inline>
-  const btn = document.getElementById("theme-toggle");
-  const sun = document.getElementById("icon-sun");
-  const moon = document.getElementById("icon-moon");
-
-  function updateIcons() {
-    const isDark = document.documentElement.classList.contains("dark");
-    sun.style.display = isDark ? "none" : "inline";
-    moon.style.display = isDark ? "inline" : "none";
+<style>
+  :root {
+    --nav-bg: rgba(255, 255, 255, 0.7);
+    --nav-border: rgba(255, 255, 255, 0.4);
+    --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    --link-hover: rgba(0, 0, 0, 0.04);
+    --primary: #3b82f6;
+    --primary-glow: rgba(59, 130, 246, 0.4);
+    --text: #0f172a;
+    --text-muted: #64748b;
   }
-  updateIcons();
 
-  btn.addEventListener("click", () => {
-    document.documentElement.classList.toggle("dark");
-    localStorage.setItem("theme", document.documentElement.classList.contains("dark") ? "dark" : "light");
+  :global(.dark) {
+    --nav-bg: rgba(15, 23, 42, 0.6);
+    --nav-border: rgba(255, 255, 255, 0.08);
+    --nav-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+    --link-hover: rgba(255, 255, 255, 0.08);
+    --text: #f8fafc;
+    --text-muted: #94a3b8;
+  }
+
+  /* --- Premium Scroll Progress --- */
+  #scroll-progress-container {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: transparent;
+    z-index: 100;
+  }
+  
+  #scroll-progress {
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--primary));
+    width: 0%;
+    box-shadow: 0 0 15px var(--primary-glow);
+    border-radius: 0 4px 4px 0;
+    position: relative;
+    transition: width 0.1s ease-out;
+  }
+
+  #scroll-progress::after {
+    content: '';
+    position: absolute; right: 0; top: -2px;
+    width: 6px; height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+  }
+
+  /* --- Floating Glass Navbar --- */
+  .site-nav {
+    position: fixed;
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99;
+    width: 95%;
+    max-width: 56rem;
+    border-radius: 9999px;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--nav-border);
+    box-shadow: var(--nav-shadow), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+  }
+
+  /* Hide navbar on scroll down, show on scroll up */
+  :global(body.scrolling-down) .site-nav { transform: translate(-50%, -150%); }
+
+  .nav-inner {
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'JetBrains Mono', 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    letter-spacing: -0.04em;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    padding-left: 0.5rem;
+    transition: opacity 0.2s ease;
+  }
+  
+  .nav-logo:hover { opacity: 0.8; }
+  
+  .logo-dot { 
+    color: var(--primary); 
+    text-shadow: 0 0 12px var(--primary-glow);
+  }
+  
+  /* --- Links with Animated Hover Layers --- */
+  .nav-links {
+    display: flex;
+    gap: 0.2rem; 
+    list-style: none;
+    margin: 0; padding: 0;
+  }
+ 
+  .nav-links a {
+    text-decoration: none;
+    position: relative;
+    padding: 0.5rem 1rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    border-radius: 9999px;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .nav-links a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: var(--link-hover);
+    opacity: 0;
+    transform: scale(0.85);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+  }
+
+  .nav-links a:hover::before { opacity: 1; transform: scale(1); }
+  .nav-links a:hover { color: var(--text); }
+  
+  /* Active Link Aceternity Glow Effect */
+  .nav-links a.active { color: var(--text); font-weight: 600; }
+  .nav-links a.active::before {
+    opacity: 1;
+    transform: scale(1);
+    background: color-mix(in srgb, var(--primary) 15%, transparent);
+    border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+    box-shadow: 0 0 20px -5px var(--primary-glow);
+  }
+
+  /* --- Actions & Buttons --- */
+  .nav-actions { display: flex; align-items: center; gap: 0.5rem; }
+  
+  .theme-toggle {
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    color: var(--text);
+    width: 2.2rem; height: 2.2rem;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .theme-toggle:hover {
+    background: var(--link-hover);
+    border: 1px solid var(--nav-border);
+    transform: rotate(15deg) scale(1.1);
+  }
+
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 2.2rem; height: 2.2rem;
+    background: var(--link-hover);
+    border: 1px solid var(--nav-border);
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s ease;
+  }
+  
+  .menu-toggle span {
+    display: block;
+    width: 1.1rem; height: 1.5px;
+    margin: 0 auto;
+    background: var(--text);
+    border-radius: 2px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+  }
+  
+  .menu-toggle.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+  .menu-toggle.open span:nth-child(2) { opacity: 0; }
+  .menu-toggle.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+  /* --- Mobile Menu (Refined 3D Animation) --- */
+  .mobile-menu {
+    position: absolute;
+    top: calc(100% + 1rem);
+    left: 0; width: 100%;
+    list-style: none; margin: 0; padding: 0;
+    
+    opacity: 0; visibility: hidden;
+    transform: translateY(-15px) scale(0.95);
+    transform-origin: top center;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    background: var(--nav-bg);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border-radius: 1.5rem;
+    box-shadow: var(--nav-shadow);
+    border: 1px solid var(--nav-border);
+    overflow: hidden;
+  }
+  
+  .mobile-menu.open {
+    opacity: 1; visibility: visible;
+    transform: translateY(0) scale(1);
+    padding: 0.5rem 0;
+  }
+  
+  .mobile-menu li a {
+    display: flex; align-items: center;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.95rem; font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .mobile-menu li a::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 0;
+    background: var(--primary);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-menu li a:hover, .mobile-menu li a.active {
+    background: color-mix(in srgb, var(--primary) 5%, transparent);
+    padding-left: 2rem;
+    color: var(--text);
+  }
+
+  .mobile-menu li a:hover::before, .mobile-menu li a.active::before { width: 4px; }
+
+  @media (max-width: 780px) {
+    .nav-links { display: none; }
+    .menu-toggle { display: flex; }
+    .site-nav { width: 92%; top: 1rem; }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    // Theme Toggling logic
+    const btn = document.getElementById("theme-toggle");
+    const sun = document.getElementById("icon-sun");
+    const moon = document.getElementById("icon-moon");
+
+    function updateIcons() {
+      const isDark = document.documentElement.classList.contains("dark");
+      sun.style.display = isDark ? "none" : "block";
+      moon.style.display = isDark ? "block" : "none";
+    }
+    
+    // Initial check (Assuming global script handles the class injection, this syncs icons)
     updateIcons();
-  });
+
+    btn.addEventListener("click", () => {
+      document.documentElement.classList.toggle("dark");
+      localStorage.setItem("theme", document.documentElement.classList.contains("dark") ? "dark" : "light");
+      updateIcons();
+    });
+
+    // Mobile Menu logic
+    const menuToggle = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    
+    menuToggle.addEventListener("click", () => {
+      const open = mobileMenu.classList.toggle("open");
+      menuToggle.classList.toggle("open", open);
+      menuToggle.setAttribute("aria-expanded", String(open));
+    });
+    
+    mobileMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
+      mobileMenu.classList.remove("open");
+      menuToggle.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    }));
+
+    // Scroll Progress & Hide Nav on Scroll Down
+    const progress = document.getElementById("scroll-progress");
+    let lastScroll = window.scrollY;
+
+    function updateScrollState() {
+      const h = document.documentElement;
+      const currentScroll = h.scrollTop;
+      
+      // Update Progress Bar
+      const scrolled = currentScroll / (h.scrollHeight - h.clientHeight) * 100;
+      progress.style.width = `${scrolled || 0}%`;
+
+      // Hide/Show Navbar Header
+      if (currentScroll > lastScroll && currentScroll > 80) {
+        document.body.classList.add("scrolling-down");
+        mobileMenu.classList.remove("open"); // Auto close mobile menu on scroll down
+        menuToggle.classList.remove("open");
+      } else {
+        document.body.classList.remove("scrolling-down");
+      }
+      lastScroll = currentScroll;
+    }
+    document.addEventListener("scroll", updateScrollState, { passive: true });
+    updateScrollState();
+
+    // Scroll Spy for Active Links
+    const navLinks = document.querySelectorAll("[data-nav-link]");
+    const sections = Array.from(navLinks)
+      .map(a => {
+        try { return document.querySelector(a.getAttribute("href")); } catch { return null; }
+      }).filter(Boolean);
+
+    const spyObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute("id");
+          navLinks.forEach(a => {
+            if(a.getAttribute("href") === `#${id}`) {
+               a.classList.add("active");
+            } else {
+               a.classList.remove("active");
+            }
+          });
+        }
+      });
+    }, { rootMargin: "-40% 0px -60% 0px" }); // Adjusted offsets for more accurate spying
+    
+    sections.forEach(s => spyObserver.observe(s));
+  })();
 </script>

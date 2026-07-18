@@ -1,22 +1,533 @@
 ---
+import cvFile from '../assets/CV_Fairuz_Alda_Perkasa.pdf';
+const roles = ["Full-Stack Developer", "AI Integration Engineer", "Data Analyst Engineer", "Machine Learning Engineer", "Programmer Palugada", "No Cyber Security"];
+
+const highlights = [
+  { text: "Informatics Graduate", icon: "🎓" },
+  { text: "Ex-IT Intern Sasa Inti", icon: "💼" },
+  { text: "Bangkit ML Cohort '24", icon: "🚀" },
+  { text: "AI & ML Enthusiast", icon: "🤖" },
+];
 ---
-<section id="home" style="min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:0 1.5rem; position:relative; overflow:hidden;">
-  <div class="blob" style="top:10%; left:50%; transform:translateX(-50%);"></div>
-  <h1 style="font-size:clamp(2.5rem,6vw,4rem); font-weight:700; margin-bottom:0.5rem;">Your Full Name</h1>
-  <p class="chip chip-indigo" style="margin-bottom:1.5rem;">Full-Stack Developer</p>
-  <h2 style="font-size:1.5rem; font-weight:600; max-width:36rem; margin-bottom:1rem;">Building digital products that solve real problems.</h2>
-  <p class="text-muted" style="max-width:32rem; margin-bottom:2rem;">
-    I'm a developer who turns ideas into clean, functional, and scalable web applications.
-    I enjoy working at the intersection of good design and solid engineering.
-  </p>
-  <div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:2rem;">
-    <a href="/cv.pdf" class="btn btn-primary">Download CV</a>
-    <a href="#projects" class="btn btn-outline">View Projects</a>
-    <a href="#contact" class="btn btn-outline">Contact Me</a>
+<section id="home" class="hero">
+  <div class="sparkles-container" id="sparkles" aria-hidden="true"></div>
+  <div class="noise-overlay"></div>
+  <div class="grid-bg"></div>
+  
+  <div class="aurora-container">
+    <div class="aurora aurora-1"></div>
+    <div class="aurora aurora-2"></div>
+    <div class="aurora aurora-3"></div>
   </div>
-  <div style="display:flex; gap:1.5rem; font-size:0.9rem;">
-    <a href="https://github.com/yourusername" target="_blank">GitHub</a>
-    <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
-    <a href="mailto:you@email.com">Email</a>
+  
+  <div class="spotlight" id="hero-spot"></div>
+
+  <div class="hero-inner" id="hero-parallax">
+    <div class="hero-tag mono reveal track-cursor" data-reveal>
+      <div class="hover-glow"></div>
+      <div class="tag-content">
+        <span class="dot"></span> available for new opportunities
+      </div>
+    </div>
+
+    <h1 class="hero-title reveal" data-reveal style="--d:0.08s">
+      Hi, I'm <span class="grad shimmer">Fairuz Alda Perkasa</span>
+    </h1>
+
+    <h2 class="hero-role reveal" data-reveal style="--d:0.16s">
+      <span id="typed-role"></span><span class="type-cursor" aria-hidden="true"></span>
+    </h2>
+
+    <div class="hero-highlights reveal" data-reveal style="--d:0.24s">
+      <div class="scroller" data-animated="true">
+        <ul class="scroller-inner">
+          {highlights.map((item) => (
+            <li class="highlight-card track-cursor">
+              <div class="hover-glow"></div>
+              <div class="card-icon-wrapper">
+                <div class="card-icon">{item.icon}</div>
+              </div>
+              <span class="card-text">{item.text}</span>
+            </li>
+          ))}
+          {highlights.map((item) => (
+            <li class="highlight-card track-cursor" aria-hidden="true">
+              <div class="hover-glow"></div>
+              <div class="card-icon-wrapper">
+                <div class="card-icon">{item.icon}</div>
+              </div>
+              <span class="card-text">{item.text}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="hero-actions reveal" data-reveal style="--d:0.32s">
+      <a href={cvFile} download="CV_Fairuz_Alda_Perkasa.pdf" class="btn btn-moving-border magnetic" data-magnetic>
+        <div class="border-glow-wrapper">
+          <div class="border-glow-anim"></div>
+        </div>
+        <div class="btn-inner track-cursor">
+          <div class="hover-glow"></div>
+          <span class="btn-content">Download CV</span>
+        </div>
+      </a>
+      
+      <a href="#projects" class="btn btn-glass magnetic track-cursor" data-magnetic>
+        <div class="hover-glow"></div>
+        <span class="btn-content">View Projects</span>
+      </a>
+      <a href="#contact" class="btn btn-glass magnetic track-cursor" data-magnetic>
+        <div class="hover-glow"></div>
+        <span class="btn-content">Contact Me</span>
+      </a>
+    </div>
+
+    <div class="hero-social reveal" data-reveal style="--d:0.4s">
+      <a href="https://github.com/fairuzaldaperkasa" class="magnetic" data-magnetic-soft target="_blank" rel="noopener">GitHub</a>
+      <span class="sep">/</span>
+      <a href="https://linkedin.com/in/fairuzaldaperkasa" class="magnetic" data-magnetic-soft target="_blank" rel="noopener">LinkedIn</a>
+      <span class="sep">/</span>
+      <a href="mailto:fairuzaldaperkasa@email.com" class="magnetic" data-magnetic-soft>Email</a>
+    </div>
   </div>
+
+  <a href="#about" class="scroll-indicator reveal" data-reveal style="--d:0.5s" aria-label="Scroll to About section">
+    <span class="mono">scroll</span>
+    <span class="scroll-line"></span>
+  </a>
 </section>
+
+<style>
+  :root {
+    --primary: #3b82f6;
+    --primary-glow: rgba(59, 130, 246, 0.4);
+    
+    --bg-base: #fbfcfd;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --grid-color: rgba(15, 23, 42, 0.05);
+    --noise-op: 0.03;
+    
+    --a-1: rgba(59, 130, 246, 0.15);
+    --a-2: rgba(168, 85, 247, 0.12);
+    --a-3: rgba(14, 165, 233, 0.15);
+    
+    --spot-color: rgba(15, 23, 42, 0.03);
+    
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(15, 23, 42, 0.08);
+    --glass-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255,255,255,1);
+    
+    --tag-bg: rgba(255, 255, 255, 0.8);
+    --btn-primary-bg: #ffffff;
+    --btn-primary-text: #0f172a;
+    
+    --shimmer-1: #64748b;
+    --shimmer-2: #0f172a;
+    --cursor-glow: rgba(59, 130, 246, 0.15); 
+    --sparkle-color: rgba(15, 23, 42, 0.15);
+  }
+
+  :global(.dark) {
+    --bg-base: #020617;
+    --text: #f8fafc;
+    --text-muted: #94a3b8;
+    --grid-color: rgba(255, 255, 255, 0.06);
+    --noise-op: 0.05;
+    
+    --a-1: rgba(59, 130, 246, 0.18);
+    --a-2: rgba(236, 72, 153, 0.12);
+    --a-3: rgba(6, 214, 160, 0.12);
+    
+    --spot-color: rgba(255, 255, 255, 0.04);
+    
+    --glass-bg: rgba(15, 23, 42, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+    
+    --tag-bg: rgba(15, 23, 42, 0.6);
+    --btn-primary-bg: #020617;
+    --btn-primary-text: #f8fafc;
+    
+    --shimmer-1: #94a3b8;
+    --shimmer-2: #f8fafc;
+    --cursor-glow: rgba(255, 255, 255, 0.08);
+    --sparkle-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 7rem 1.5rem 6rem; 
+    position: relative;
+    overflow: hidden;
+    background-color: var(--bg-base);
+    color: var(--text);
+    perspective: 1200px;
+    transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s ease; 
+  }
+
+  .sparkles-container { position: absolute; inset: 0; z-index: 4; overflow: hidden; pointer-events: none; }
+  :global(.sparkle) {
+    position: absolute; border-radius: 50%; background-color: var(--sparkle-color);
+    box-shadow: 0 0 10px 1px var(--sparkle-color); opacity: 0;
+    animation: floatUp var(--duration) linear infinite; animation-delay: var(--delay);
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(0); opacity: 0; }
+    10% { opacity: 1; transform: translateY(-10px) scale(1); }
+    90% { opacity: 1; transform: translateY(calc(var(--distance) - 10px)) scale(1); }
+    100% { transform: translateY(var(--distance)) scale(0); opacity: 0; }
+  }
+  
+  .noise-overlay {
+    position: absolute; inset: 0; z-index: 5; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: var(--noise-op); mix-blend-mode: overlay;
+  }
+  
+  .grid-bg {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(to right, var(--grid-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+    background-size: 3rem 3rem;
+    mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, #000 20%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, #000 20%, transparent 80%);
+    z-index: 1; transition: background-image 0.5s ease;
+  }
+  
+  .aurora-container { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
+  .aurora {
+    position: absolute; width: 50vw; height: 50vh; border-radius: 50%;
+    filter: blur(80px); opacity: 0.8; animation: auroraMove 15s ease-in-out infinite alternate;
+    transition: background 0.5s ease;
+  }
+  .aurora-1 { top: 0; left: 10%; background: radial-gradient(circle, var(--a-1) 0%, transparent 70%); }
+  .aurora-2 { bottom: 10%; right: 10%; background: radial-gradient(circle, var(--a-2) 0%, transparent 70%); animation-delay: -5s; }
+  .aurora-3 { top: 40%; left: 40%; width: 40vw; background: radial-gradient(circle, var(--a-3) 0%, transparent 70%); animation-delay: -10s; }
+  
+  @keyframes auroraMove { 
+    0% { transform: translate(0, 0) scale(1); } 
+    100% { transform: translate(10%, 10%) scale(1.2); } 
+  }
+  
+  .spotlight {
+    position: absolute; inset: 0;
+    background: radial-gradient(800px circle at var(--mx, 50%) var(--my, 50%), var(--spot-color), transparent 40%);
+    z-index: 6; pointer-events: none;
+  }
+  
+  .hero-inner { max-width: 48rem; z-index: 10; transform-style: preserve-3d; will-change: transform; }
+
+  .track-cursor { position: relative; overflow: hidden; }
+  .track-cursor .hover-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(350px circle at var(--hx, 50%) var(--hy, 50%), var(--cursor-glow), transparent 40%);
+    opacity: 0; transition: opacity 0.3s ease; z-index: 0; pointer-events: none;
+  }
+  .track-cursor:hover .hover-glow { opacity: 1; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+    color: var(--text-muted); background: var(--tag-bg); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: var(--glass-shadow);
+    padding: 0.4rem 1rem; border-radius: 9999px; margin-bottom: 2.2rem; transform: translateZ(25px);
+    transition: border-color 0.3s ease;
+  }
+  .hero-tag .tag-content { display: flex; gap: 0.6rem; align-items: center; z-index: 1; }
+  .hero-tag .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--primary);
+    box-shadow: 0 0 12px 2px var(--primary-glow); animation: pulseDot 2s infinite;
+  }
+  @keyframes pulseDot { 
+    0%,100%{transform:scale(1); opacity:1;} 
+    50%{transform:scale(0.8); opacity:0.5;} 
+  }
+  
+  .hero-title {
+    font-size: clamp(2.5rem, 7vw, 4.2rem); font-weight: 800; line-height: 1.05;
+    margin-bottom: 1.2rem; letter-spacing: -0.04em; transform: translateZ(50px);
+  }
+  .grad.shimmer {
+    background: linear-gradient(110deg, var(--shimmer-1) 0%, var(--shimmer-2) 25%, var(--primary) 50%, var(--shimmer-2) 75%, var(--shimmer-1) 100%);
+    background-size: 200% auto; -webkit-background-clip: text; background-clip: text;
+    color: transparent; animation: chromeShimmer 6s linear infinite;
+  }
+  @keyframes chromeShimmer { to { background-position: 200% center; } }
+  
+  .hero-role {
+    font-family: 'JetBrains Mono', monospace; font-size: clamp(1rem, 2.5vw, 1.35rem); font-weight: 500;
+    color: var(--primary); min-height: 1.6em; margin-bottom: 1.5rem; transform: translateZ(40px);
+  }
+  .type-cursor {
+    display: inline-block; width: 2px; height: 1.1em; background-color: var(--primary);
+    margin-left: 4px; vertical-align: middle; animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hero-highlights {
+    max-width: 100%;
+    margin: 0 auto 3rem;
+    transform: translateZ(30px);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+  .scroller { overflow: hidden; }
+  .scroller-inner {
+    display: flex; gap: 1rem; padding: 0; margin: 0; list-style: none;
+    width: max-content; flex-wrap: nowrap;
+    animation: scroll 25s linear infinite;
+  }
+  .scroller-inner:hover { animation-play-state: paused; }
+  @keyframes scroll { to { transform: translateX(calc(-50% - 0.5rem)); } }
+
+  .highlight-card {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.4rem 1.2rem 0.4rem 0.4rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 9999px;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--glass-shadow);
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+  .highlight-card:hover { border-color: rgba(148, 163, 184, 0.4); transform: scale(1.02); }
+
+  .card-icon-wrapper {
+    position: relative; width: 2.2rem; height: 2.2rem;
+    border-radius: 50%; overflow: hidden;
+    background: linear-gradient(135deg, var(--glass-border), var(--primary-glow));
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .card-icon { font-size: 1rem; z-index: 1; }
+  .card-text {
+    font-size: 0.88rem; font-weight: 500; color: var(--text-muted);
+    white-space: nowrap; z-index: 2; position: relative;
+    transition: color 0.3s ease;
+  }
+  .highlight-card:hover .card-text { color: var(--text); }
+
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3.5rem; transform: translateZ(35px); }
+  .btn {
+    position: relative; display: inline-flex; align-items: center; justify-content: center;
+    padding: 0.8rem 1.8rem; font-size: 0.95rem; font-weight: 500; text-decoration: none;
+    border-radius: 9999px; cursor: pointer; will-change: transform;
+  }
+  .btn-content { z-index: 2; position: relative; }
+  
+  .btn-glass {
+    background: var(--glass-bg); color: var(--text); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: var(--glass-shadow);
+    transition: all 0.3s ease;
+  }
+  .btn-glass:hover {
+    border-color: rgba(148, 163, 184, 0.4);
+    box-shadow: 0 15px 35px -10px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  
+  .btn-moving-border { padding: 0; background: transparent; border: none; }
+  .btn-moving-border .border-glow-wrapper { position: absolute; inset: 0; border-radius: 9999px; overflow: hidden; z-index: 0; }
+  .btn-moving-border .border-glow-anim {
+    position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 70%, var(--primary) 100%);
+    animation: spinRotate 3s linear infinite;
+  }
+  .btn-moving-border .btn-inner {
+    margin: 1px; padding: 0.8rem 1.8rem; background: var(--btn-primary-bg); color: var(--btn-primary-text);
+    border-radius: 9999px; position: relative; z-index: 1; display: flex; align-items: center; justify-content: center;
+    height: calc(100% - 2px); width: calc(100% - 2px); transition: background 0.3s ease;
+  }
+  @keyframes spinRotate { 100% { transform: rotate(360deg); } }
+
+  .hero-social { display: flex; gap: 1.5rem; align-items: center; justify-content: center; font-size: 0.95rem; font-weight: 500; transform: translateZ(20px); }
+  .hero-social a { text-decoration: none; color: var(--text-muted); display: inline-block; padding: 0.5rem; transition: color 0.3s ease; }
+  .hero-social a:hover { color: var(--text); }
+  .hero-social .sep { color: var(--glass-border); }
+
+  .scroll-indicator {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+    text-decoration: none; color: var(--text-muted); transition: opacity 0.3s ease; z-index: 10;
+  }
+  .scroll-indicator:hover { opacity: 0.7; }
+  .scroll-indicator .mono { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .scroll-line { width: 1px; height: 3.5rem; background: var(--glass-border); position: relative; overflow: hidden; }
+  .scroll-line::after {
+    content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, transparent, var(--primary), transparent);
+    animation: scrollDown 2s cubic-bezier(0.6, 0.05, 0.4, 1) infinite;
+  }
+  @keyframes scrollDown { 0% { top: -100%; } 100% { top: 100%; } }
+  
+  .reveal {
+    opacity: 0; transform: translateY(20px) translateZ(0);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); transition-delay: var(--d, 0s);
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0) translateZ(var(--z, 0px)); }
+
+  @media (max-width: 768px) {
+    .scroll-indicator { bottom: 1.5rem; }
+    .hero { padding-bottom: 7rem; perspective: none; }
+    .hero-inner, .hero-tag, .hero-title, .hero-role, .hero-highlights, .hero-actions, .hero-social { transform: none !important; }
+  }
+</style>
+
+<script define:vars={{ roles }} is:inline>
+  (() => {
+    const el = document.getElementById("typed-role");
+    if(el) {
+      let ri = 0, ci = 0, deleting = false;
+      function tick() {
+        const word = roles[ri];
+        if (!deleting) {
+          ci++;
+          el.textContent = word.slice(0, ci);
+          if (ci === word.length) { deleting = true; setTimeout(tick, 2000); return; }
+        } else {
+          ci--;
+          el.textContent = word.slice(0, ci);
+          if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; }
+        }
+        setTimeout(tick, deleting ? 30 : 60);
+      }
+      tick();
+    }
+
+    const sparklesContainer = document.getElementById("sparkles");
+    if (sparklesContainer && window.innerWidth > 768) {
+      const particleCount = 30;
+      for (let i = 0; i < particleCount; i++) {
+        const sparkle = document.createElement("div");
+        sparkle.classList.add("sparkle");
+        
+        const size = Math.random() * 3 + 1; 
+        const left = Math.random() * 100;
+        const duration = Math.random() * 10 + 10; 
+        const delay = Math.random() * -20; 
+        const distance = (Math.random() * 50 + 50) * -1; 
+
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+        sparkle.style.left = `${left}%`;
+        sparkle.style.bottom = `${Math.random() * 20 - 10}%`; 
+        sparkle.style.setProperty("--duration", `${duration}s`);
+        sparkle.style.setProperty("--delay", `${delay}s`);
+        sparkle.style.setProperty("--distance", `${distance}vh`);
+
+        sparklesContainer.appendChild(sparkle);
+      }
+    }
+
+    let currentX = 0, currentY = 0;
+    let targetX = 0, targetY = 0;
+    const magneticElements = [];
+    
+    if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+      
+      document.querySelectorAll(".track-cursor").forEach(el => {
+        el.addEventListener("mousemove", (e) => {
+          const rect = el.getBoundingClientRect();
+          el.style.setProperty("--hx", `${e.clientX - rect.left}px`);
+          el.style.setProperty("--hy", `${e.clientY - rect.top}px`);
+        });
+      });
+
+      document.querySelectorAll("[data-magnetic], [data-magnetic-soft]").forEach(el => {
+        const isSoft = el.hasAttribute("data-magnetic-soft");
+        magneticElements.push({ el, x: 0, y: 0, tx: 0, ty: 0, strength: isSoft ? 0.15 : 0.3, isHovered: false });
+
+        el.addEventListener("mouseenter", () => {
+          const state = magneticElements.find(m => m.el === el);
+          if(state) state.isHovered = true;
+        });
+
+        el.addEventListener("mousemove", (e) => {
+          const state = magneticElements.find(m => m.el === el);
+          if(state) {
+            const rect = el.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            state.tx = (e.clientX - cx) * state.strength;
+            state.ty = (e.clientY - cy) * state.strength;
+          }
+        });
+
+        el.addEventListener("mouseleave", () => {
+          const state = magneticElements.find(m => m.el === el);
+          if(state) { state.isHovered = false; state.tx = 0; state.ty = 0; }
+        });
+      });
+
+      const heroSection = document.querySelector(".hero");
+      const spot = document.getElementById("hero-spot");
+      
+      if (window.innerWidth > 780) {
+        heroSection.addEventListener("mousemove", (e) => {
+          const rect = heroSection.getBoundingClientRect();
+          spot.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+          spot.style.setProperty("--my", `${e.clientY - rect.top}px`);
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          targetX = ((e.clientX - rect.left) - centerX) / centerX * 4; 
+          targetY = ((e.clientY - rect.top) - centerY) / centerY * -4;
+        });
+
+        heroSection.addEventListener("mouseleave", () => {
+          targetX = 0; targetY = 0;
+        });
+
+        const parallax = document.getElementById("hero-parallax");
+        
+        function renderPhysics() {
+          currentX += (targetX - currentX) * 0.08;
+          currentY += (targetY - currentY) * 0.08;
+          
+          if (Math.abs(targetX - currentX) > 0.01 || Math.abs(targetY - currentY) > 0.01) {
+            parallax.style.transform = `rotateY(${currentX}deg) rotateX(${currentY}deg)`;
+          }
+
+          magneticElements.forEach(state => {
+            state.x += (state.tx - state.x) * 0.15; 
+            state.y += (state.ty - state.y) * 0.15;
+            
+            if (Math.abs(state.tx - state.x) > 0.01 || Math.abs(state.ty - state.y) > 0.01) {
+              state.el.style.transform = `translate3d(${state.x}px, ${state.y}px, 0)`;
+            }
+          });
+
+          requestAnimationFrame(renderPhysics);
+        }
+        
+        requestAnimationFrame(renderPhysics);
+      }
+    }
+  })();
+</script>
+
+<script is:inline>
+  (() => {
+    const revealEls = document.querySelectorAll("[data-reveal]");
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          const style = window.getComputedStyle(entry.target);
+          const transformStr = style.getPropertyValue('transform');
+          if (transformStr !== 'none' && !entry.target.style.getPropertyValue('--z')) {
+             entry.target.style.setProperty('--z', 'inherit');
+          }
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    revealEls.forEach(el => revealObserver.observe(el));
+  })();
+</script>

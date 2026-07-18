@@ -12,12 +12,38 @@ import Achievements from "../components/Achievements.astro";
 import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
+
+const title = "Fairuz Alda Perkasa — Full-Stack Developer";
+const description = "Portfolio of Fairuz Alda Perkasa, a full-stack developer specializing in web development and AI integration.";
+const siteUrl = "https://fairuzaldaperkasa.com";
 ---
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Your Name - Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={siteUrl} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <meta name="theme-color" content="#4F46E5" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:image" content={`${siteUrl}/og-image.png`} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
+
     <script is:inline>
       const saved = localStorage.getItem("theme");
       if (saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)) {

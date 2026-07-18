@@ -1,16 +1,208 @@
 ---
 const achievements = [
-  "1st Place, Hackathon Name 2025",
-  "Published article on relevant topic",
-  "Speaker at event name",
-  "Contributed to open-source project",
+  { text: "1st Place, Hackathon Name 2025", tag: "Competition" },
+  { text: "Published article on relevant topic", tag: "Writing" },
+  { text: "Speaker at event name", tag: "Talk" },
+  { text: "Contributed to open-source project", tag: "Open Source" },
 ];
 ---
-<section id="achievements" class="section section-alt">
-  <h2 style="font-size:2rem; margin-bottom:1.5rem;">Achievements</h2>
-  <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:0.75rem;">
-    {achievements.map(item => (
-      <li class="card" style="padding:1rem 1.5rem;">🏆 {item}</li>
-    ))}
-  </ul>
+<section id="achievements" class="section achievements">
+  <div class="achievements-sparkles" id="achievements-sparkles" aria-hidden="true"></div>
+  <div class="achievements-noise" aria-hidden="true"></div>
+  <div class="achievements-grid-bg" aria-hidden="true"></div>
+  <div class="achievements-aurora-container" aria-hidden="true">
+    <div class="achievements-aurora achievements-aurora-1"></div>
+    <div class="achievements-aurora achievements-aurora-2"></div>
+    <div class="achievements-aurora achievements-aurora-3"></div>
+  </div>
+  <div class="achievements-spotlight" id="achievements-spot" aria-hidden="true"></div>
+
+  <div class="achievements-container">
+    <div class="section-head achievements-head reveal" data-reveal>
+      <div class="eyebrow-wrapper">
+        <span class="dot"></span>
+        <p class="eyebrow mono">08_ACHIEVEMENTS</p>
+      </div>
+      <h2>Achievements</h2>
+      <p class="subtitle">Recognition and milestones that reflect the work behind them.</p>
+    </div>
+
+    <ul class="achievements-list">
+      {achievements.map((item, i) => (
+        <li class="card achievement-item reveal track-cursor" data-reveal data-tilt data-glow style={`--d:${i * 0.07}s; --accent: var(--sunshine);`}>
+          <div class="hover-glow"></div>
+          <div class="achievement-topline" aria-hidden="true"></div>
+          <span class="chip chip-sunshine">{item.tag}</span>
+          <p>{item.text}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
 </section>
+
+<style>
+  .achievements {
+    position: relative;
+    overflow: hidden;
+    padding: 8rem 0;
+    background-color: var(--bg-base, var(--bg));
+  }
+
+  .achievements-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    box-sizing: border-box;
+  }
+
+  .achievements-sparkles,
+  .achievements-noise,
+  .achievements-grid-bg,
+  .achievements-aurora-container,
+  .achievements-spotlight {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .achievements-noise {
+    z-index: 5;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: var(--noise-op, 0.03);
+    mix-blend-mode: overlay;
+  }
+
+  .achievements-grid-bg {
+    z-index: 1;
+    background-image: linear-gradient(to right, var(--grid-color, rgba(15,23,42,0.05)) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-color, rgba(15,23,42,0.05)) 1px, transparent 1px);
+    background-size: 3rem 3rem;
+    mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, #000 20%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, #000 20%, transparent 80%);
+  }
+
+  .achievements-sparkles { z-index: 4; overflow: hidden; }
+
+  :global(.achievements-sparkle) {
+    position: absolute;
+    border-radius: 50%;
+    background-color: var(--sparkle-color, rgba(255,209,102,0.18));
+    box-shadow: 0 0 10px 1px var(--sparkle-color, rgba(255,209,102,0.18));
+    opacity: 0;
+    animation: achievementsFloatUp var(--duration) linear infinite;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes achievementsFloatUp {
+    0% { transform: translateY(0) scale(0); opacity: 0; }
+    10% { opacity: 1; transform: translateY(-10px) scale(1); }
+    90% { opacity: 1; transform: translateY(calc(var(--distance) - 10px)) scale(1); }
+    100% { transform: translateY(var(--distance)) scale(0); opacity: 0; }
+  }
+
+  .achievements-aurora-container { z-index: 2; overflow: hidden; }
+  .achievements-aurora { position: absolute; width: 45vw; height: 45vh; border-radius: 50%; filter: blur(80px); opacity: 0.68; animation: achievementsAuroraMove 15s ease-in-out infinite alternate; }
+  .achievements-aurora-1 { top: 0; left: 8%; background: radial-gradient(circle, rgba(79,70,229,0.14) 0%, transparent 70%); }
+  .achievements-aurora-2 { bottom: 5%; right: 8%; background: radial-gradient(circle, rgba(255,107,107,0.12) 0%, transparent 70%); animation-delay: -5s; }
+  .achievements-aurora-3 { top: 35%; left: 38%; width: 36vw; background: radial-gradient(circle, rgba(255,209,102,0.15) 0%, transparent 70%); animation-delay: -10s; }
+  @keyframes achievementsAuroraMove { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(8%, 8%) scale(1.15); } }
+
+  .achievements-spotlight { z-index: 6; background: radial-gradient(800px circle at var(--mx, 50%) var(--my, 50%), rgba(255,209,102,0.06), transparent 40%); }
+
+  .achievements-head { text-align: center; max-width: 40rem; margin: 0 auto 5rem; position: relative; z-index: 10; }
+  .eyebrow-wrapper { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; }
+
+  .achievements-list { list-style: none; padding: 0; margin: 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; max-width: 76rem; }
+  .achievement-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 1.25rem 1.5rem;
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, transparent), color-mix(in srgb, var(--bg-alt) 82%, transparent));
+    border-radius: 24px;
+    border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--border));
+    box-shadow: 0 18px 40px -24px color-mix(in srgb, var(--accent) 30%, transparent);
+    backdrop-filter: blur(20px);
+  }
+  .hover-glow {
+    position: absolute; inset: 0; z-index: 1;
+    background: radial-gradient(400px circle at var(--hx, 50%) var(--hy, 50%), color-mix(in srgb, var(--accent) 24%, transparent), transparent 50%);
+    opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+  }
+  .track-cursor:hover .hover-glow { opacity: 1; }
+  .achievement-topline { position: absolute; inset: 0 auto auto 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 35%, transparent), transparent); z-index: 2; opacity: 0.95; }
+  .achievement-item p { position: relative; z-index: 3; margin: 0; font-weight: 500; }
+
+  @media (max-width: 900px) {
+    .achievements-list { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 560px) {
+    .achievements-container { padding: 0 1.25rem; }
+    .achievement-item { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const section = document.querySelector("#achievements.achievements");
+    const spotlight = document.getElementById("achievements-spot");
+    const sparklesContainer = document.getElementById("achievements-sparkles");
+
+    if (section && spotlight) {
+      section.addEventListener("mousemove", (e) => {
+        const rect = section.getBoundingClientRect();
+        spotlight.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+        spotlight.style.setProperty("--my", `${e.clientY - rect.top}px`);
+
+        document.querySelectorAll("#achievements .track-cursor").forEach((card) => {
+          const cardRect = card.getBoundingClientRect();
+          card.style.setProperty("--hx", `${e.clientX - cardRect.left}px`);
+          card.style.setProperty("--hy", `${e.clientY - cardRect.top}px`);
+        });
+      });
+    }
+
+    if (sparklesContainer && window.innerWidth > 768) {
+      const particleCount = 16;
+      for (let i = 0; i < particleCount; i++) {
+        const sparkle = document.createElement("div");
+        sparkle.classList.add("achievements-sparkle");
+
+        const size = Math.random() * 3 + 1;
+        const left = Math.random() * 100;
+        const duration = Math.random() * 10 + 10;
+        const delay = Math.random() * -20;
+        const distance = (Math.random() * 50 + 50) * -1;
+
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+        sparkle.style.left = `${left}%`;
+        sparkle.style.bottom = `${Math.random() * 20 - 10}%`;
+        sparkle.style.setProperty("--duration", `${duration}s`);
+        sparkle.style.setProperty("--delay", `${delay}s`);
+        sparkle.style.setProperty("--distance", `${distance}vh`);
+
+        sparklesContainer.appendChild(sparkle);
+      }
+    }
+
+    const revealEls = document.querySelectorAll("#achievements [data-reveal]");
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach((el) => revealObserver.observe(el));
+  })();
+</script>

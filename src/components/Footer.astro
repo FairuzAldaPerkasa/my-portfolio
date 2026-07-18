@@ -1,15 +1,315 @@
 ---
 const links = ["Home", "About", "Projects", "Experience", "Contact"];
 ---
-<footer style="border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:center; font-size:0.9rem;" class="text-muted">
-  <p style="margin-bottom:1rem;">(c) 2026 Your Full Name. All rights reserved.</p>
-  <div style="display:flex; justify-content:center; gap:1rem; margin-bottom:1rem;">
-    {links.map(link => <a href={`#${link.toLowerCase()}`}>{link}</a>)}
+<footer class="site-footer">
+  <div class="footer-sparkles" id="footer-sparkles" aria-hidden="true"></div>
+  <div class="footer-noise" aria-hidden="true"></div>
+  <div class="footer-grid-bg" aria-hidden="true"></div>
+  <div class="footer-aurora-container" aria-hidden="true">
+    <div class="footer-aurora footer-aurora-1"></div>
+    <div class="footer-aurora footer-aurora-2"></div>
+    <div class="footer-aurora footer-aurora-3"></div>
   </div>
-  <div style="display:flex; justify-content:center; gap:1rem; margin-bottom:1rem;">
-    <a href="https://github.com/yourusername" target="_blank">GitHub</a>
-    <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
-    <a href="mailto:you@email.com">Email</a>
+
+  <div class="footer-shell">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo mono">Fairuz<span>.</span>Alda<span>.</span>Perkasa</span>
+        <p class="footer-copy text-muted">Building scalable digital products with clean code, thoughtful design, and just enough coffee to keep the bugs away.</p>
+      </div>
+
+      <div class="footer-links-wrap">
+        <p class="footer-label mono">Navigate</p>
+        <ul class="footer-links">
+          {links.map(link => <li><a href={`#${link.toLowerCase()}`}>{link}</a></li>)}
+        </ul>
+      </div>
+
+      <div class="footer-social-wrap">
+        <p class="footer-label mono">Connect</p>
+        <div class="footer-social">
+          <a href="https://github.com/fairuzaldaperkasa" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/fairuzaldaperkasa" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="mailto:fairuzaldaperkasa@gmail.com">Email</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-note text-muted mono">built with Astro & Tailwind CSS — © 2026 Fairuz Alda Perkasa</p>
+    </div>
   </div>
-  <p>Thanks for stopping by - let's create something meaningful together.</p>
+
+  <button id="back-to-top" class="back-to-top" aria-label="Back to top"><span aria-hidden="true">↑</span></button>
 </footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    overflow: hidden;
+    padding: 4.5rem 1.5rem 2rem;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--bg-base, var(--bg)) 94%, transparent), color-mix(in srgb, var(--bg-alt) 88%, transparent));
+    border-top: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  }
+
+  .footer-shell {
+    position: relative;
+    z-index: 10;
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: 1.35rem;
+    border-radius: 24px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 92%, transparent), color-mix(in srgb, var(--bg-alt) 90%, transparent));
+    border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+    box-shadow: 0 16px 40px -28px color-mix(in srgb, var(--primary) 26%, transparent);
+    backdrop-filter: blur(20px);
+  }
+
+  .footer-noise,
+  .footer-grid-bg,
+  .footer-aurora-container,
+  .footer-sparkles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .footer-noise {
+    z-index: 4;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    mix-blend-mode: overlay;
+  }
+
+  .footer-grid-bg {
+    z-index: 1;
+    background-image: linear-gradient(to right, var(--grid-color, rgba(15,23,42,0.05)) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-color, rgba(15,23,42,0.05)) 1px, transparent 1px);
+    background-size: 3rem 3rem;
+    mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, #000 20%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, #000 20%, transparent 80%);
+  }
+
+  .footer-sparkles { z-index: 3; overflow: hidden; }
+
+  :global(.footer-sparkle) {
+    position: absolute;
+    border-radius: 50%;
+    background-color: var(--sparkle-color, rgba(79,70,229,0.16));
+    box-shadow: 0 0 10px 1px var(--sparkle-color, rgba(79,70,229,0.16));
+    opacity: 0;
+    animation: footerFloatUp var(--duration) linear infinite;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes footerFloatUp {
+    0% { transform: translateY(0) scale(0); opacity: 0; }
+    10% { opacity: 1; transform: translateY(-10px) scale(1); }
+    90% { opacity: 1; transform: translateY(calc(var(--distance) - 10px)) scale(1); }
+    100% { transform: translateY(var(--distance)) scale(0); opacity: 0; }
+  }
+
+  .footer-aurora-container { z-index: 2; overflow: hidden; }
+  .footer-aurora {
+    position: absolute;
+    width: 42vw;
+    height: 42vh;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.42;
+    animation: footerAuroraMove 15s ease-in-out infinite alternate;
+  }
+  .footer-aurora-1 { top: -8%; left: 8%; background: radial-gradient(circle, rgba(79,70,229,0.14) 0%, transparent 70%); }
+  .footer-aurora-2 { bottom: -10%; right: 10%; background: radial-gradient(circle, rgba(255,107,107,0.12) 0%, transparent 70%); animation-delay: -5s; }
+  .footer-aurora-3 { top: 28%; left: 34%; width: 34vw; background: radial-gradient(circle, rgba(6,214,160,0.10) 0%, transparent 70%); animation-delay: -10s; }
+  @keyframes footerAuroraMove { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(8%, 8%) scale(1.15); } }
+
+  .footer-inner {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr 0.8fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-logo {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.01em;
+  }
+
+  .footer-logo span { color: var(--primary); }
+
+  .footer-copy {
+    margin: 0;
+    max-width: 22rem;
+    line-height: 1.7;
+    font-size: 0.92rem;
+  }
+
+  .footer-label {
+    margin: 0 0 0.75rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: color-mix(in srgb, var(--primary) 75%, var(--text-muted));
+  }
+
+  .footer-links, .footer-social {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem 1.1rem;
+    margin: 0;
+    padding: 0;
+    font-size: 0.9rem;
+  }
+
+  .footer-links a, .footer-social a {
+    text-decoration: none;
+    color: color-mix(in srgb, var(--text-muted) 92%, var(--text));
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .footer-links a:hover, .footer-social a:hover {
+    color: var(--primary);
+    transform: translateY(-1px);
+  }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+  }
+
+  .footer-note { font-size: 0.78rem; margin: 0; }
+
+  .back-to-top {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 60;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--primary) 20%, var(--border));
+    background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 88%, transparent), color-mix(in srgb, var(--bg-alt) 92%, transparent));
+    color: var(--text);
+    cursor: pointer;
+    box-shadow: 0 12px 28px -18px color-mix(in srgb, var(--primary) 50%, transparent);
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+    transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .back-to-top:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 860px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .site-footer {
+      padding: 4rem 1rem 1.5rem;
+    }
+
+    .footer-shell {
+      padding: 1.1rem;
+      border-radius: 24px;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .back-to-top {
+      right: 1rem;
+      bottom: 1rem;
+    }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const btn = document.getElementById("back-to-top");
+    const sparklesContainer = document.getElementById("footer-sparkles");
+    const hero = document.getElementById("home");
+
+    if (!btn) return;
+
+    if (sparklesContainer && window.innerWidth > 768) {
+      const particleCount = 18;
+      for (let i = 0; i < particleCount; i++) {
+        const sparkle = document.createElement("div");
+        sparkle.classList.add("footer-sparkle");
+
+        const size = Math.random() * 3 + 1;
+        const left = Math.random() * 100;
+        const duration = Math.random() * 10 + 10;
+        const delay = Math.random() * -20;
+        const distance = (Math.random() * 50 + 50) * -1;
+
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+        sparkle.style.left = `${left}%`;
+        sparkle.style.bottom = `${Math.random() * 20 - 10}%`;
+        sparkle.style.setProperty("--duration", `${duration}s`);
+        sparkle.style.setProperty("--delay", `${delay}s`);
+        sparkle.style.setProperty("--distance", `${distance}vh`);
+
+        sparklesContainer.appendChild(sparkle);
+      }
+    }
+
+    function updateVisibility() {
+      if (!hero) {
+        btn.classList.toggle("visible", window.scrollY > window.innerHeight * 0.7);
+        return;
+      }
+
+      const heroRect = hero.getBoundingClientRect();
+      btn.classList.toggle("visible", heroRect.bottom <= 0);
+    }
+
+    if (hero) {
+      document.addEventListener("scroll", updateVisibility, { passive: true });
+      window.addEventListener("resize", updateVisibility);
+      updateVisibility();
+    } else {
+      document.addEventListener("scroll", updateVisibility, { passive: true });
+      window.addEventListener("resize", updateVisibility);
+      updateVisibility();
+    }
+
+    btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  })();
+</script>
