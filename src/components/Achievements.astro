@@ -1,0 +1,16 @@
+---
+const achievements = [
+  "1st Place, Hackathon Name 2025",
+  "Published article on relevant topic",
+  "Speaker at event name",
+  "Contributed to open-source project",
+];
+---
+<section id="achievements" class="section section-alt">
+  <h2 style="font-size:2rem; margin-bottom:1.5rem;">Achievements</h2>
+  <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:0.75rem;">
+    {achievements.map(item => (
+      <li class="card" style="padding:1rem 1.5rem;">🏆 {item}</li>
+    ))}
+  </ul>
+</section>

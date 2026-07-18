@@ -1,0 +1,36 @@
+---
+const links = ["About", "Skills", "Projects", "Experience", "Contact"];
+---
+<nav style="position:fixed; top:0; width:100%; backdrop-filter:blur(10px); z-index:50; border-bottom:1px solid var(--border); background:color-mix(in srgb, var(--bg) 85%, transparent);">
+  <div class="section" style="display:flex; justify-content:space-between; align-items:center; padding:1rem 1.5rem;">
+    <span style="font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.25rem;">Your Name</span>
+    <ul style="display:flex; gap:1.5rem; list-style:none; margin:0; padding:0; font-size:0.9rem; font-weight:500;">
+      {links.map(link => (
+        <li><a href={`#${link.toLowerCase()}`}>{link}</a></li>
+      ))}
+    </ul>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+      <span id="icon-sun">☀️</span>
+      <span id="icon-moon" style="display:none;">🌙</span>
+    </button>
+  </div>
+</nav>
+
+<script is:inline>
+  const btn = document.getElementById("theme-toggle");
+  const sun = document.getElementById("icon-sun");
+  const moon = document.getElementById("icon-moon");
+
+  function updateIcons() {
+    const isDark = document.documentElement.classList.contains("dark");
+    sun.style.display = isDark ? "none" : "inline";
+    moon.style.display = isDark ? "inline" : "none";
+  }
+  updateIcons();
+
+  btn.addEventListener("click", () => {
+    document.documentElement.classList.toggle("dark");
+    localStorage.setItem("theme", document.documentElement.classList.contains("dark") ? "dark" : "light");
+    updateIcons();
+  });
+</script>

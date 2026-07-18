@@ -1,0 +1,23 @@
+---
+const stack = [
+  { category: "Frontend", items: ["React", "Next.js", "Astro", "Tailwind CSS"], color: "indigo" },
+  { category: "Backend", items: ["Node.js", "Express", "Django"], color: "coral" },
+  { category: "AI/ML", items: ["TensorFlow", "PyTorch", "OpenAI API"], color: "teal" },
+  { category: "Database", items: ["PostgreSQL", "MongoDB", "MySQL"], color: "sunshine" },
+  { category: "Tools", items: ["Git", "Docker", "Figma", "Postman"], color: "pink" },
+  { category: "Cloud", items: ["AWS", "Vercel", "Google Cloud"], color: "indigo" },
+];
+---
+<section id="techstack" class="section">
+  <h2 style="font-size:2rem; margin-bottom:2.5rem;">Tech Stack</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:2rem;">
+    {stack.map(group => (
+      <div>
+        <h3 style="font-weight:600; margin-bottom:0.75rem;">{group.category}</h3>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+          {group.items.map(item => <span class={`chip chip-${group.color}`}>{item}</span>)}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

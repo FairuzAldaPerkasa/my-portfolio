@@ -1,0 +1,26 @@
+---
+const skillGroups = [
+  { title: "Programming Languages", items: ["JavaScript", "TypeScript", "Python"], color: "indigo" },
+  { title: "Frameworks", items: ["React", "Next.js", "Astro", "Node.js"], color: "coral" },
+  { title: "AI / Machine Learning", items: ["TensorFlow", "PyTorch", "LangChain", "OpenAI API"], color: "teal" },
+  { title: "Databases", items: ["PostgreSQL", "MongoDB", "MySQL"], color: "sunshine" },
+  { title: "Cloud", items: ["AWS", "Google Cloud", "Vercel"], color: "pink" },
+  { title: "Developer Tools", items: ["Git", "Docker", "VS Code", "Figma"], color: "indigo" },
+  { title: "Soft Skills", items: ["Problem Solving", "Communication", "Team Collaboration", "Adaptability"], color: "coral" },
+];
+---
+<section id="skills" class="section section-alt">
+  <h2 style="font-size:2rem; margin-bottom:2.5rem;">Skills</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:2rem;">
+    {skillGroups.map(group => (
+      <div>
+        <h3 style="font-weight:600; margin-bottom:0.75rem; font-size:1.05rem;">{group.title}</h3>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+          {group.items.map(item => (
+            <span class={`chip chip-${group.color}`}>{item}</span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,18 @@
+---
+const certificates = [
+  { name: "Certificate Name", issuer: "Issuer Name", year: "2026", description: "Covers core concepts and hands-on practice in the subject.", url: "https://credential-link.com" },
+];
+---
+<section id="certificates" class="section section-alt">
+  <h2 style="font-size:2rem; margin-bottom:2.5rem;">Certificates</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem;">
+    {certificates.map(cert => (
+      <div class="card">
+        <h3 style="font-weight:600;">{cert.name}</h3>
+        <p class="chip chip-pink" style="margin:0.5rem 0;">{cert.issuer} - {cert.year}</p>
+        <p class="text-muted" style="font-size:0.9rem; margin-bottom:0.75rem;">{cert.description}</p>
+        <a href={cert.url} target="_blank" style="font-size:0.85rem; color:var(--primary); font-weight:600;">View Credential</a>
+      </div>
+    ))}
+  </div>
+</section>

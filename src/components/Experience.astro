@@ -1,0 +1,19 @@
+---
+import { getCollection } from "astro:content";
+const jobs = await getCollection("experience");
+---
+<section id="experience" class="section section-alt">
+  <h2 style="font-size:2rem; margin-bottom:2.5rem;">Experience</h2>
+  <div style="display:flex; flex-direction:column; gap:2rem;">
+    {jobs.map(job => (
+      <div style="border-left:3px solid var(--primary); padding-left:1.5rem;">
+        <h3 style="font-size:1.1rem; font-weight:600;">{job.data.position} - {job.data.company}</h3>
+        <p class="chip chip-indigo" style="margin:0.5rem 0;">{job.data.duration}</p>
+        <p class="text-muted" style="margin-bottom:0.75rem;">{job.data.description}</p>
+        <ul style="color:var(--text-muted); font-size:0.9rem; padding-left:1.2rem;">
+          {job.data.achievements.map(a => <li>{a}</li>)}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

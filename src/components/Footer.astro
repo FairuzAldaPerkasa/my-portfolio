@@ -1,0 +1,15 @@
+---
+const links = ["Home", "About", "Projects", "Experience", "Contact"];
+---
+<footer style="border-top:1px solid var(--border); padding:2.5rem 1.5rem; text-align:center; font-size:0.9rem;" class="text-muted">
+  <p style="margin-bottom:1rem;">(c) 2026 Your Full Name. All rights reserved.</p>
+  <div style="display:flex; justify-content:center; gap:1rem; margin-bottom:1rem;">
+    {links.map(link => <a href={`#${link.toLowerCase()}`}>{link}</a>)}
+  </div>
+  <div style="display:flex; justify-content:center; gap:1rem; margin-bottom:1rem;">
+    <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
+    <a href="mailto:you@email.com">Email</a>
+  </div>
+  <p>Thanks for stopping by - let's create something meaningful together.</p>
+</footer>
