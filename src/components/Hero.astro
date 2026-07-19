@@ -158,13 +158,13 @@ const highlights = [
   }
 
   .hero {
-    min-height: 100vh;
+    min-height: 92vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 7rem 1.5rem 6rem; 
+    padding: 5.5rem 1.5rem 3.5rem; 
     position: relative;
     overflow: hidden;
     background-color: var(--bg-base);
@@ -222,7 +222,7 @@ const highlights = [
     z-index: 6; pointer-events: none;
   }
   
-  .hero-inner { max-width: 48rem; z-index: 10; transform-style: preserve-3d; will-change: transform; }
+  .hero-inner { width: 100%; max-width: 48rem; box-sizing: border-box; z-index: 10; transform-style: preserve-3d; will-change: transform; }
 
   .track-cursor { position: relative; overflow: hidden; }
   .track-cursor .hover-glow {
@@ -236,7 +236,7 @@ const highlights = [
     display: inline-flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
     color: var(--text-muted); background: var(--tag-bg); border: 1px solid var(--glass-border);
     backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: var(--glass-shadow);
-    padding: 0.4rem 1rem; border-radius: 9999px; margin-bottom: 2.2rem; transform: translateZ(25px);
+    padding: 0.4rem 1rem; border-radius: 9999px; margin-bottom: 1.4rem; transform: translateZ(25px);
     transition: border-color 0.3s ease;
   }
   .hero-tag .tag-content { display: flex; gap: 0.6rem; align-items: center; z-index: 1; }
@@ -251,7 +251,8 @@ const highlights = [
   
   .hero-title {
     font-size: clamp(2.5rem, 7vw, 4.2rem); font-weight: 800; line-height: 1.05;
-    margin-bottom: 1.2rem; letter-spacing: -0.04em; transform: translateZ(50px);
+    margin-bottom: 0.9rem; letter-spacing: -0.04em; transform: translateZ(50px);
+    max-width: 100%; overflow-wrap: break-word; word-break: break-word;
   }
   .grad.shimmer {
     background: linear-gradient(110deg, var(--shimmer-1) 0%, var(--shimmer-2) 25%, var(--primary) 50%, var(--shimmer-2) 75%, var(--shimmer-1) 100%);
@@ -262,7 +263,7 @@ const highlights = [
   
   .hero-role {
     font-family: 'JetBrains Mono', monospace; font-size: clamp(1rem, 2.5vw, 1.35rem); font-weight: 500;
-    color: var(--primary); min-height: 1.6em; margin-bottom: 1.5rem; transform: translateZ(40px);
+    color: var(--primary); min-height: 1.6em; margin-bottom: 1rem; transform: translateZ(40px);
   }
   .type-cursor {
     display: inline-block; width: 2px; height: 1.1em; background-color: var(--primary);
@@ -272,19 +273,20 @@ const highlights = [
 
   .hero-highlights {
     max-width: 100%;
-    margin: 0 auto 3rem;
+    margin: 0 auto 1.75rem;
     transform: translateZ(30px);
     -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
     mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   }
   .scroller { overflow: hidden; }
   .scroller-inner {
-    display: flex; gap: 1rem; padding: 0; margin: 0; list-style: none;
+    --marquee-gap: 1rem;
+    display: flex; gap: var(--marquee-gap); padding: 0; margin: 0; list-style: none;
     width: max-content; flex-wrap: nowrap;
     animation: scroll 25s linear infinite;
   }
   .scroller-inner:hover { animation-play-state: paused; }
-  @keyframes scroll { to { transform: translateX(calc(-50% - 0.5rem)); } }
+  @keyframes scroll { to { transform: translateX(calc(-50% - (var(--marquee-gap) / 2))); } }
 
   .highlight-card {
     display: flex; align-items: center; gap: 0.75rem;
@@ -314,7 +316,7 @@ const highlights = [
   }
   .highlight-card:hover .card-text { color: var(--text); }
 
-  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3.5rem; transform: translateZ(35px); }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; align-items: center; margin-bottom: 2rem; max-width: 100%; transform: translateZ(35px); }
   .btn {
     position: relative; display: inline-flex; align-items: center; justify-content: center;
     padding: 0.8rem 1.8rem; font-size: 0.95rem; font-weight: 500; text-decoration: none;
@@ -345,13 +347,13 @@ const highlights = [
   }
   @keyframes spinRotate { 100% { transform: rotate(360deg); } }
 
-  .hero-social { display: flex; gap: 1.5rem; align-items: center; justify-content: center; font-size: 0.95rem; font-weight: 500; transform: translateZ(20px); }
+  .hero-social { display: flex; gap: 0.75rem 1.5rem; flex-wrap: wrap; align-items: center; justify-content: center; font-size: 0.95rem; font-weight: 500; max-width: 100%; transform: translateZ(20px); }
   .hero-social a { text-decoration: none; color: var(--text-muted); display: inline-block; padding: 0.5rem; transition: color 0.3s ease; }
   .hero-social a:hover { color: var(--text); }
   .hero-social .sep { color: var(--glass-border); }
 
   .scroll-indicator {
-    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    position: flex; bottom: 2rem; left: 50%; transform: translateX(-50%);
     display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
     text-decoration: none; color: var(--text-muted); transition: opacity 0.3s ease; z-index: 10;
   }
@@ -373,8 +375,42 @@ const highlights = [
 
   @media (max-width: 768px) {
     .scroll-indicator { bottom: 1.5rem; }
-    .hero { padding-bottom: 7rem; perspective: none; }
+    .hero { min-height: auto; padding-bottom: 4.5rem; perspective: none; }
     .hero-inner, .hero-tag, .hero-title, .hero-role, .hero-highlights, .hero-actions, .hero-social { transform: none !important; }
+  }
+
+  /* Mengisi celah antara 768px dan 480px agar tidak ada elemen yang terpotong/menumpuk */
+  @media (max-width: 640px) {
+    .hero-inner { padding: 0 0.25rem; }
+    .hero-highlights { max-width: 100%; }
+    .scroller-inner { --marquee-gap: 0.6rem; }
+    .highlight-card { padding: 0.3rem 0.9rem 0.3rem 0.3rem; gap: 0.5rem; }
+    .hero-actions { gap: 0.65rem; }
+    .btn { padding: 0.65rem 1.3rem; font-size: 0.85rem; }
+    .btn-moving-border .btn-inner { padding: 0.65rem 1.3rem; }
+    .hero-social { gap: 0.6rem 1rem; font-size: 0.85rem; }
+  }
+
+  /* Compact mobile */
+  @media (max-width: 480px) {
+    .hero { padding: 3.5rem 1rem 2.5rem; }
+    .hero-tag { padding: 0.25rem 0.65rem; margin-bottom: 1rem; font-size: 0.6rem; }
+    .hero-tag .dot { width: 5px; height: 5px; }
+    .hero-title { font-size: clamp(1.7rem, 8.5vw, 2.2rem); margin-bottom: 0.5rem; }
+    .hero-role { font-size: 0.8rem; margin-bottom: 0.75rem; min-height: 1.4em; }
+    .hero-highlights { margin: 0 auto 1.25rem; }
+    .scroller-inner { --marquee-gap: 0.45rem; }
+    .highlight-card { padding: 0.25rem 0.7rem 0.25rem 0.25rem; gap: 0.4rem; }
+    .card-icon-wrapper { width: 1.5rem; height: 1.5rem; }
+    .card-icon { font-size: 0.72rem; }
+    .card-text { font-size: 0.68rem; }
+    .hero-actions { gap: 0.5rem; margin-bottom: 1.4rem; }
+    .btn { padding: 0.55rem 1.1rem; font-size: 0.78rem; }
+    .btn-moving-border .btn-inner { padding: 0.55rem 1.1rem; }
+    .hero-social { gap: 0.75rem; font-size: 0.74rem; }
+    .hero-social a { padding: 0.2rem; }
+    .scroll-indicator { bottom: 1rem; }
+    .scroll-line { height: 2.25rem; }
   }
 </style>
 

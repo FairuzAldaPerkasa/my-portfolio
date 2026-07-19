@@ -75,12 +75,12 @@ a { color: inherit; }
 
 p { line-height: 1.7; }
 
-.section { padding: 7rem 1.5rem; max-width: 100%; margin: 0 auto; position: relative; }
+.section { padding: 4.5rem 1.5rem; max-width: 100%; margin: 0 auto; position: relative; }
 .section-alt { background: var(--bg-alt); }
-@media (max-width: 640px) { .section { padding: 4.5rem 1.25rem; } }
+@media (max-width: 640px) { .section { padding: 3rem 1.25rem; } }
 
 /* ---------- Section head / eyebrow (code-comment motif) ---------- */
-.section-head { margin-bottom: 3.5rem; max-width: 42rem; }
+.section-head { margin-bottom: 2.25rem; max-width: 42rem; }
 .eyebrow {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.8rem;
