@@ -140,8 +140,8 @@ function hashFor(i: number) {
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background-image: linear-gradient(to right, var(--grid-color, rgba(15,23,42,0.05)) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--grid-color, rgba(15,23,42,0.05)) 1px, transparent 1px);
+    background-image: linear-gradient(to right, var(--grid-color, rgba(28,25,23,0.05)) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-color, rgba(28,25,23,0.05)) 1px, transparent 1px);
     background-size: 3rem 3rem;
     mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, #000 20%, transparent 80%);
     -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, #000 20%, transparent 80%);
@@ -182,7 +182,7 @@ function hashFor(i: number) {
     top: 35%;
     left: 38%;
     width: 36vw;
-    background: radial-gradient(circle, rgba(6, 214, 160, 0.12) 0%, transparent 70%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--teal) 12%, transparent) 0%, transparent 70%);
     animation-delay: -10s;
   }
 
@@ -223,9 +223,7 @@ function hashFor(i: number) {
   }
 
   .grad {
-    background: linear-gradient(135deg, var(--primary), #ec4899);
-    -webkit-background-clip: text;
-    color: transparent;
+    color: var(--primary);
   }
 
   .experience-track {
@@ -247,9 +245,12 @@ function hashFor(i: number) {
 
   .tracing-fill {
     width: 100%;
-    height: 0;
+    height: 100%;
+    transform: scaleY(0);
+    transform-origin: top;
     background: linear-gradient(to bottom, var(--primary), var(--coral), var(--teal));
     box-shadow: 0 0 18px color-mix(in srgb, var(--primary) 40%, transparent);
+    transition: transform 0.1s linear;
   }
 
   .experience-card {
@@ -262,7 +263,6 @@ function hashFor(i: number) {
     backdrop-filter: blur(20px);
     border-radius: 24px;
     border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--border));
-    box-shadow: 0 18px 40px -22px color-mix(in srgb, var(--accent) 30%, transparent);
   }
 
   .hover-glow {
@@ -375,24 +375,32 @@ function hashFor(i: number) {
   }
 
   .timeline-body {
-    height: 0;
+    display: grid;
+    grid-template-rows: 0fr;
     overflow: hidden;
-    will-change: height;
-    transition: height 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    transition: grid-template-rows 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .experience-card.open .timeline-body {
+    grid-template-rows: 1fr;
   }
 
   .timeline-body-inner {
-    padding: 0 1.4rem;
+    min-height: 0;
+    /* 70ch was rendering ~98 real characters/line in this font (the 'ch' unit is
+       sized off the '0' glyph, which is wider than the average letter here).
+       54ch keeps the actual measure under 80 characters/line. */
+    max-width: 54ch;
+    padding: 0 1.4rem 1.4rem;
     opacity: 0;
     transform: translateY(-6px);
-    transition: opacity 0.3s ease, transform 0.35s ease, padding 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    transition: opacity 0.3s ease, transform 0.35s ease;
   }
 
   .experience-card.open .timeline-body-inner {
-    padding-bottom: 1.4rem;
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.4s ease 0.06s, transform 0.4s ease 0.06s, padding 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    transition: opacity 0.4s ease 0.06s, transform 0.4s ease 0.06s;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -440,12 +448,26 @@ function hashFor(i: number) {
   }
 
   .experience-markdown :global(blockquote) {
-    margin: 0;
-    padding: 0.85rem 1rem;
-    border-left: 3px solid color-mix(in srgb, var(--accent) 72%, transparent);
-    background: color-mix(in srgb, var(--accent) 8%, transparent);
-    border-radius: 0 14px 14px 0;
+    margin: 0.5rem 0;
+    padding: 0.2rem 0 0.2rem 0.1rem;
+    font-family: var(--font-display, 'Playfair Display', serif);
+    font-style: italic;
+    font-size: 1.05em;
+    line-height: 1.5;
     color: var(--text);
+    position: relative;
+  }
+
+  .experience-markdown :global(blockquote::before) {
+    content: '\201C';
+    font-family: var(--font-display, 'Playfair Display', serif);
+    font-style: normal;
+    font-size: 2.2em;
+    line-height: 0;
+    color: var(--accent);
+    margin-right: 0.15rem;
+    vertical-align: -0.35em;
+    display: inline-block;
   }
 
   .experience-markdown :global(*) {
@@ -469,6 +491,7 @@ function hashFor(i: number) {
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+    max-width: 54ch;
   }
 
   .timeline-achievements li::marker {
@@ -565,83 +588,72 @@ function hashFor(i: number) {
       });
     }
 
-    if (sparklesContainer && window.innerWidth > 768) {
-      const particleCount = 16;
-      for (let i = 0; i < particleCount; i++) {
-        const sparkle = document.createElement("div");
-        sparkle.classList.add("experience-sparkle");
 
-        const size = Math.random() * 3 + 1;
-        const left = Math.random() * 100;
-        const duration = Math.random() * 10 + 10;
-        const delay = Math.random() * -20;
-        const distance = (Math.random() * 50 + 50) * -1;
-
-        sparkle.style.width = `${size}px`;
-        sparkle.style.height = `${size}px`;
-        sparkle.style.left = `${left}%`;
-        sparkle.style.bottom = `${Math.random() * 20 - 10}%`;
-        sparkle.style.setProperty("--duration", `${duration}s`);
-        sparkle.style.setProperty("--delay", `${delay}s`);
-        sparkle.style.setProperty("--distance", `${distance}vh`);
-
-        sparklesContainer.appendChild(sparkle);
+    // Lightweight canvas-based sparkle renderer (replaces per-particle DOM nodes for perf)
+    function mountSparkleCanvas(container, count, fallbackColor) {
+      const canvas = document.createElement("canvas");
+      canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;display:block;";
+      container.appendChild(canvas);
+      const ctx = canvas.getContext("2d");
+      const color = (getComputedStyle(container).getPropertyValue("--sparkle-color") || "").trim() || fallbackColor;
+      let w = 0, h = 0, raf = null;
+      const resize = () => { w = canvas.width = container.clientWidth; h = canvas.height = container.clientHeight; };
+      resize();
+      window.addEventListener("resize", resize);
+      const particles = Array.from({ length: count }, () => ({
+        x: Math.random() * 100,
+        y: Math.random() * 120 - 10,
+        r: Math.random() * 1.5 + 0.5,
+        speed: Math.random() * 0.012 + 0.006,
+        drift: (Math.random() - 0.5) * 0.015,
+        phase: Math.random() * Math.PI * 2,
+      }));
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = color;
+        for (const p of particles) {
+          p.y -= p.speed;
+          p.x += p.drift;
+          if (p.y < -10) { p.y = 110; p.x = Math.random() * 100; }
+          const alpha = 0.35 + 0.65 * Math.pow(Math.sin(p.phase + p.y * 0.05), 2);
+          ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+          ctx.beginPath();
+          ctx.arc((p.x / 100) * w, (p.y / 100) * h, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        raf = requestAnimationFrame(draw);
       }
+      draw();
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = null; }
+        else if (!raf) draw();
+      });
+    }
+
+    if (sparklesContainer && window.innerWidth > 768) {
+      // Perf: single <canvas> + rAF loop instead of 16 individual DOM nodes/animations
+      mountSparkleCanvas(sparklesContainer, 16, "rgba(79,70,229,0.16)");
     }
 
     document.querySelectorAll("[data-timeline-toggle]").forEach((header) => {
       const item = header.closest("[data-timeline-item]");
       const body = item.querySelector(".timeline-body");
-      const inner = body.querySelector(".timeline-body-inner");
-      if (!body || !inner) return;
+      if (!body) return;
 
       // On mobile layouts, accordions should start collapsed regardless of the
-      // markup's default "open" state, so force-close them before measuring.
+      // markup's default "open" state.
       if (window.innerWidth <= 768 && item.classList.contains("open")) {
         item.classList.remove("open");
         header.setAttribute("aria-expanded", "false");
       }
 
-      // Initialize starting height based on whether the card starts open or closed.
-      if (item.classList.contains("open")) {
-        body.style.height = "auto";
-      } else {
-        body.style.height = "0px";
-      }
-
+      // Height animation is handled purely in CSS via grid-template-rows,
+      // so toggling just needs to flip the class + aria state.
       function toggle() {
-        const isOpen = item.classList.contains("open");
-
-        if (isOpen) {
-          // Closing: lock in the current rendered height first, then animate to 0
-          // on the next frame so the browser has a real starting value to transition from.
-          const startHeight = body.getBoundingClientRect().height;
-          body.style.height = `${startHeight}px`;
-          // Force reflow so the browser registers the explicit height before we change it again.
-          void body.offsetHeight;
-          requestAnimationFrame(() => {
-            body.style.height = "0px";
-          });
-          item.classList.remove("open");
-          header.setAttribute("aria-expanded", "false");
-        } else {
-          // Opening: measure the natural content height and animate to it,
-          // then release to "auto" once the transition ends so resizes/content changes stay correct.
-          item.classList.add("open");
-          header.setAttribute("aria-expanded", "true");
-          const targetHeight = inner.scrollHeight;
-          body.style.height = `${targetHeight}px`;
-
-          const onEnd = (e) => {
-            if (e.propertyName === "height") {
-              if (item.classList.contains("open")) {
-                body.style.height = "auto";
-              }
-              body.removeEventListener("transitionend", onEnd);
-            }
-          };
-          body.addEventListener("transitionend", onEnd);
-        }
+        const willOpen = !item.classList.contains("open");
+        item.classList.toggle("open", willOpen);
+        header.setAttribute("aria-expanded", String(willOpen));
       }
 
       header.addEventListener("click", toggle);
@@ -650,13 +662,6 @@ function hashFor(i: number) {
           e.preventDefault();
           toggle();
         }
-      });
-    });
-
-    // Keep open accordions correctly sized if content reflows (fonts loading, window resize).
-    window.addEventListener("resize", () => {
-      document.querySelectorAll("#experience [data-timeline-item].open .timeline-body").forEach((body) => {
-        body.style.height = "auto";
       });
     });
 
@@ -699,7 +704,7 @@ function hashFor(i: number) {
       const vh = window.innerHeight;
       const total = r.height;
       const progressed = Math.min(Math.max(vh * 0.75 - r.top, 0), total);
-      fill.style.height = `${(progressed / total) * 100}%`;
+      fill.style.transform = `scaleY(${total ? progressed / total : 0})`;
     }
 
     document.addEventListener("scroll", updateBeam, { passive: true });

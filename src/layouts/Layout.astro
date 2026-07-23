@@ -6,7 +6,7 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>Web Portofolio Fairuz</title>
 	</head>
 	<body>
 		<slot />
@@ -20,4 +20,72 @@
 		width: 100%;
 		height: 100%;
 	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		html {
+			scroll-behavior: smooth;
+		}
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		:global(body.motion-ready section),
+		:global(body.motion-ready footer.site-footer) {
+			transform-origin: 50% 0%;
+			transform: translate3d(0, var(--ms-y, 0px), 0) scale(var(--ms-scale, 1));
+			opacity: var(--ms-opacity, 1);
+			filter: blur(var(--ms-blur, 0px));
+			transition:
+				transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+				opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+				filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+			will-change: transform, opacity, filter;
+		}
+	}
 </style>
+
+<script is:inline>
+	(() => {
+		const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (reduceMotion) return;
+
+		document.body.classList.add("motion-ready");
+
+		const els = Array.from(document.querySelectorAll("section, footer.site-footer"));
+		if (!els.length) return;
+
+		let ticking = false;
+
+		function update() {
+			ticking = false;
+			const vh = window.innerHeight;
+			const half = vh / 2;
+
+			for (const el of els) {
+				const rect = el.getBoundingClientRect();
+				// Skip work for sections far outside the viewport in either direction.
+				if (rect.bottom < -vh || rect.top > vh * 2) continue;
+
+				const center = rect.top + rect.height / 2;
+				const distance = center - half;
+				const range = half + rect.height / 2;
+				const progress = Math.max(-1, Math.min(1, distance / range));
+				const abs = Math.abs(progress);
+
+				el.style.setProperty("--ms-y", `${progress * 16}px`);
+				el.style.setProperty("--ms-scale", `${1 - abs * 0.03}`);
+				el.style.setProperty("--ms-opacity", `${1 - abs * 0.3}`);
+				el.style.setProperty("--ms-blur", `${abs * 1.5}px`);
+			}
+		}
+
+		function onScroll() {
+			if (!ticking) {
+				ticking = true;
+				requestAnimationFrame(update);
+			}
+		}
+
+		update();
+		window.addEventListener("scroll", onScroll, { passive: true });
+		window.addEventListener("resize", onScroll);
+	})();
+</script>

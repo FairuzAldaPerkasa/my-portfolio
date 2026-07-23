@@ -8,7 +8,7 @@ const links = ["About", "Skills", "Projects", "Experience", "Contact"];
 <nav class="site-nav">
   <div class="nav-inner">
     <a href="#home" class="nav-logo mono">
-      My<span class="logo-dot">.</span>Portfolio
+      <span class="shine-text">My</span><span class="logo-dot">.</span>Portfolio
     </a>
 
     <ul class="nav-links">
@@ -42,23 +42,25 @@ const links = ["About", "Skills", "Projects", "Experience", "Contact"];
 
 <style>
   :root {
-    --nav-bg: rgba(255, 255, 255, 0.7);
-    --nav-border: rgba(255, 255, 255, 0.4);
-    --nav-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-    --link-hover: rgba(0, 0, 0, 0.04);
-    --primary: #3b82f6;
-    --primary-glow: rgba(59, 130, 246, 0.4);
-    --text: #0f172a;
-    --text-muted: #64748b;
+    --nav-bg: rgba(255, 255, 255, 0.72);
+    --nav-border: rgba(255, 255, 255, 0.5);
+    --nav-shadow: 0 4px 30px rgba(28, 25, 23, 0.06);
+    --link-hover: rgba(28, 25, 23, 0.04);
+    --primary: #9C6B12;
+    --primary-glow: rgba(156, 107, 18, 0.4);
+    --text: #1C1917;
+    --text-muted: #6B6459;
   }
 
   :global(.dark) {
-    --nav-bg: rgba(15, 23, 42, 0.6);
-    --nav-border: rgba(255, 255, 255, 0.08);
-    --nav-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
-    --link-hover: rgba(255, 255, 255, 0.08);
-    --text: #f8fafc;
-    --text-muted: #94a3b8;
+    --nav-bg: rgba(20, 17, 12, 0.6);
+    --nav-border: rgba(245, 239, 224, 0.1);
+    --nav-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.55);
+    --link-hover: rgba(245, 239, 224, 0.08);
+    --primary: #D4AF37;
+    --primary-glow: rgba(212, 175, 55, 0.4);
+    --text: #F5EFE0;
+    --text-muted: #A79E8C;
   }
 
   /* --- Premium Scroll Progress --- */
@@ -72,27 +74,29 @@ const links = ["About", "Skills", "Projects", "Experience", "Contact"];
   
   #scroll-progress {
     height: 100%;
+    width: 100%;
     background: linear-gradient(90deg, transparent, var(--primary));
-    width: 0%;
-    box-shadow: 0 0 15px var(--primary-glow);
+    box-shadow: 0 0 5px color-mix(in srgb, var(--primary-glow) 60%, transparent);
     border-radius: 0 4px 4px 0;
     position: relative;
-    transition: width 0.1s ease-out;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.1s ease-out;
   }
 
   #scroll-progress::after {
     content: '';
     position: absolute; right: 0; top: -2px;
-    width: 6px; height: 6px;
+    width: 5px; height: 5px;
     background: #fff;
     border-radius: 50%;
-    box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+    box-shadow: 0 0 6px var(--primary);
   }
 
   /* --- Floating Glass Navbar --- */
   .site-nav {
     position: fixed;
-    top: 1.5rem;
+    top: calc(1.5rem + env(safe-area-inset-top));
     left: 50%;
     transform: translateX(-50%);
     z-index: 99;
@@ -118,7 +122,7 @@ const links = ["About", "Skills", "Projects", "Experience", "Contact"];
   }
 
   .nav-logo {
-    font-family: 'JetBrains Mono', 'Inter', sans-serif;
+    font-family: 'JetBrains Mono', 'Sora', sans-serif;
     font-weight: 700;
     font-size: 1.1rem;
     text-decoration: none;
@@ -271,9 +275,11 @@ const links = ["About", "Skills", "Projects", "Experience", "Contact"];
   
   .mobile-menu li a::before {
     content: '';
-    position: absolute; left: 0; top: 0; bottom: 0; width: 0;
+    position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
     background: var(--primary);
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .mobile-menu li a:hover, .mobile-menu li a.active {
@@ -282,7 +288,7 @@ const links = ["About", "Skills", "Projects", "Experience", "Contact"];
     color: var(--text);
   }
 
-  .mobile-menu li a:hover::before, .mobile-menu li a.active::before { width: 4px; }
+  .mobile-menu li a:hover::before, .mobile-menu li a.active::before { transform: scaleX(1); }
 
   @media (max-width: 780px) {
     .nav-links { display: none; }
@@ -351,7 +357,7 @@ const links = ["About", "Skills", "Projects", "Experience", "Contact"];
       
       // Update Progress Bar
       const scrolled = currentScroll / (h.scrollHeight - h.clientHeight) * 100;
-      progress.style.width = `${scrolled || 0}%`;
+      progress.style.transform = `scaleX(${(scrolled || 0) / 100})`;
 
       // Hide/Show Navbar Header
       if (currentScroll > lastScroll && currentScroll > 80) {
@@ -389,5 +395,68 @@ const links = ["About", "Skills", "Projects", "Experience", "Contact"];
     }, { rootMargin: "-40% 0px -60% 0px" }); // Adjusted offsets for more accurate spying
     
     sections.forEach(s => spyObserver.observe(s));
+  })();
+</script>
+
+<script is:inline>
+  (() => {
+    // Skip entirely on touch devices or when motion is reduced
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const okMotion = window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
+    if (!fine || !okMotion) return;
+
+    document.documentElement.classList.add("has-custom-cursor");
+
+    const dot = document.createElement("div");
+    dot.id = "luxe-cursor-dot";
+    const ring = document.createElement("div");
+    ring.id = "luxe-cursor-ring";
+    const ringVisual = document.createElement("div");
+    ringVisual.className = "ring-visual";
+    ring.appendChild(ringVisual);
+    document.body.append(dot, ring);
+
+    let dx = 0, dy = 0, rx = 0, ry = 0, mx = 0, my = 0;
+
+    window.addEventListener("mousemove", (e) => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
+    }, { passive: true });
+
+    function loop() {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    document.addEventListener("mouseover", (e) => {
+      if (e.target.closest("a, button, .tilt-card, .card, .glow-card, [data-magnetic], [data-magnetic-soft]")) {
+        ring.classList.add("is-active");
+      }
+    });
+    document.addEventListener("mouseout", (e) => {
+      if (e.target.closest("a, button, .tilt-card, .card, .glow-card, [data-magnetic], [data-magnetic-soft]")) {
+        ring.classList.remove("is-active");
+      }
+    });
+
+    // Subtle 3D tilt + glare for any element marked .tilt-card across the site
+    document.querySelectorAll(".tilt-card").forEach((card) => {
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        const rotY = (px - 0.5) * 8;
+        const rotX = (0.5 - py) * 8;
+        card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px)`;
+        card.style.setProperty("--gx", `${px * 100}%`);
+        card.style.setProperty("--gy", `${py * 100}%`);
+      });
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "perspective(900px) rotateX(0) rotateY(0) translateY(0)";
+      });
+    });
   })();
 </script>

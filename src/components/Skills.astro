@@ -29,7 +29,7 @@ const skillGroups: Array<{
   { title: "CS Fundamentals", icon: "▧", desc: "The foundation behind every system.", color: "indigo",
     items: ["Struktur Data", "Database Management", "Data Visualization"] },
   { title: "Soft Skills", icon: "◈", desc: "How I work with people, not just code.", color: "coral",
-    items: ["Problem Solving", "Communication", "Kolaborasi Tim", "Manajemen Waktu", "Kepemimpinan", "Berpikir Kritis", "Research Skill", "Self-Directed Learning", "Adaptability", "Teaching / Guiding"] },
+    items: ["Problem Solving", "Communication", "Teamwork", "Time Management", "Leadership", "Critical Thinking", "Research", "Self-Learning", "Adaptability", "Mentoring"]}
 ];
 
 const totalSkills = skillGroups.reduce((sum, g) => sum + g.items.length, 0);
@@ -103,8 +103,8 @@ const totalSkills = skillGroups.reduce((sum, g) => sum + g.items.length, 0);
   }
   .skills-grid-bg {
     position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background-image: linear-gradient(to right, var(--grid-color, rgba(15,23,42,0.05)) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--grid-color, rgba(15,23,42,0.05)) 1px, transparent 1px);
+    background-image: linear-gradient(to right, var(--grid-color, rgba(28,25,23,0.05)) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-color, rgba(28,25,23,0.05)) 1px, transparent 1px);
     background-size: 3rem 3rem;
     mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, #000 20%, transparent 80%);
     -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, #000 20%, transparent 80%);
@@ -119,7 +119,7 @@ const totalSkills = skillGroups.reduce((sum, g) => sum + g.items.length, 0);
   }
   .skills-aurora-1 { top: 0; left: 8%; background: radial-gradient(circle, var(--a-1, rgba(59,130,246,0.15)) 0%, transparent 70%); }
   .skills-aurora-2 { bottom: 5%; right: 8%; background: radial-gradient(circle, var(--a-2, rgba(168,85,247,0.12)) 0%, transparent 70%); animation-delay: -5s; }
-  .skills-aurora-3 { top: 35%; left: 38%; width: 36vw; background: radial-gradient(circle, var(--a-3, rgba(14,165,233,0.15)) 0%, transparent 70%); animation-delay: -10s; }
+  .skills-aurora-3 { top: 35%; left: 38%; width: 36vw; background: radial-gradient(circle, color-mix(in srgb, var(--teal) 15%, transparent) 0%, transparent 70%); animation-delay: -10s; }
   @keyframes skillsAuroraMove {
     0% { transform: translate(0, 0) scale(1); }
     100% { transform: translate(8%, 8%) scale(1.15); }
@@ -145,7 +145,7 @@ const totalSkills = skillGroups.reduce((sum, g) => sum + g.items.length, 0);
   .skills-head { text-align: center; max-width: 40rem; margin: 0 auto 2.25rem; position: relative; z-index: 10; }
   .eyebrow-wrapper { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.25rem; }
   .dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; }
-  .grad { background: linear-gradient(135deg, var(--primary), #ec4899); -webkit-background-clip: text; color: transparent; }
+  .grad { color: var(--primary); }
 
   /* Grid */
   .skills-grid { position: relative; z-index: 10; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
@@ -167,6 +167,14 @@ const totalSkills = skillGroups.reduce((sum, g) => sum + g.items.length, 0);
 
   .skill-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
   .skill-top .glow-card-icon { margin-bottom: 0; }
+
+  /* A11y fix: solid gold background + near-black text gives a safe >4.5:1 contrast
+     ratio in both themes, instead of relying on --text over a translucent gold tint. */
+  .skill-icon {
+    background: var(--gold);
+    color: #1C1917;
+    font-weight: 600;
+  }
   .skill-card-title { font-size: 1rem; margin-bottom: 0.35rem; }
   .skill-card-desc { font-size: 0.85rem; margin: 0 0 0.9rem; }
   .skill-badges { display: flex; flex-wrap: wrap; gap: 0.45rem; }
@@ -222,28 +230,52 @@ const totalSkills = skillGroups.reduce((sum, g) => sum + g.items.length, 0);
 
     // Floating sparkles (copied from About)
     const sparklesContainer = document.getElementById("skills-sparkles");
-    if (sparklesContainer && window.innerWidth > 768) {
-      const particleCount = 18;
-      for (let i = 0; i < particleCount; i++) {
-        const sparkle = document.createElement("div");
-        sparkle.classList.add("skills-sparkle");
 
-        const size = Math.random() * 3 + 1;
-        const left = Math.random() * 100;
-        const duration = Math.random() * 10 + 10;
-        const delay = Math.random() * -20;
-        const distance = (Math.random() * 50 + 50) * -1;
-
-        sparkle.style.width = `${size}px`;
-        sparkle.style.height = `${size}px`;
-        sparkle.style.left = `${left}%`;
-        sparkle.style.bottom = `${Math.random() * 20 - 10}%`;
-        sparkle.style.setProperty("--duration", `${duration}s`);
-        sparkle.style.setProperty("--delay", `${delay}s`);
-        sparkle.style.setProperty("--distance", `${distance}vh`);
-
-        sparklesContainer.appendChild(sparkle);
+    // Lightweight canvas-based sparkle renderer (replaces per-particle DOM nodes for perf)
+    function mountSparkleCanvas(container, count, fallbackColor) {
+      const canvas = document.createElement("canvas");
+      canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;display:block;";
+      container.appendChild(canvas);
+      const ctx = canvas.getContext("2d");
+      const color = (getComputedStyle(container).getPropertyValue("--sparkle-color") || "").trim() || fallbackColor;
+      let w = 0, h = 0, raf = null;
+      const resize = () => { w = canvas.width = container.clientWidth; h = canvas.height = container.clientHeight; };
+      resize();
+      window.addEventListener("resize", resize);
+      const particles = Array.from({ length: count }, () => ({
+        x: Math.random() * 100,
+        y: Math.random() * 120 - 10,
+        r: Math.random() * 1.5 + 0.5,
+        speed: Math.random() * 0.012 + 0.006,
+        drift: (Math.random() - 0.5) * 0.015,
+        phase: Math.random() * Math.PI * 2,
+      }));
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = color;
+        for (const p of particles) {
+          p.y -= p.speed;
+          p.x += p.drift;
+          if (p.y < -10) { p.y = 110; p.x = Math.random() * 100; }
+          const alpha = 0.35 + 0.65 * Math.pow(Math.sin(p.phase + p.y * 0.05), 2);
+          ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+          ctx.beginPath();
+          ctx.arc((p.x / 100) * w, (p.y / 100) * h, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        raf = requestAnimationFrame(draw);
       }
+      draw();
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = null; }
+        else if (!raf) draw();
+      });
+    }
+
+    if (sparklesContainer && window.innerWidth > 768) {
+      // Perf: single <canvas> + rAF loop instead of 18 individual DOM nodes/animations
+      mountSparkleCanvas(sparklesContainer, 18, "rgba(15,23,42,0.15)");
     }
 
     // Reveal on scroll (unobserve when visible)
