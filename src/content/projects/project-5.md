@@ -7,6 +7,6 @@ role: "Full-Stack Developer — Membangun REST API, mengelola migrasi basis data
 impact: "Menyediakan sistem pencatatan data yang terintegrasi, mempermudah pemantauan melalui dasbor web, dan menjaga konsistensi data dengan arsitektur yang andal."
 githubUrl: "https://github.com/FairuzAldaPerkasa/manajemen-data-kendaraan"
 demoUrl: "http://manajemen-data-kendaraan-production.up.railway.app/"
-date: 2024-11-15
+date: 2026-08-04
 image: "../../assets/Project/ManajemenDataKendaraan.png"
 ---
